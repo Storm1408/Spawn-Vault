@@ -1,0 +1,57 @@
+name: Publicar versão Windows
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag existente a publicar (ex.: v2.3.1)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Confirmar versão e tag
+        shell: pwsh
+        run: node -e "const p=require('./package.json');if(!/^v[0-9]+[.][0-9]+[.][0-9]+$/.test(process.env.RELEASE_TAG)||process.env.RELEASE_TAG!=='v'+p.version)process.exit(1)"
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run dist -- --publish never
+      - run: npm run verify-release
+      - name: Preparar código-fonte
+        shell: pwsh
+        run: git archive --format=zip --output=dist/SpawnVault-Source.zip HEAD
+      - name: Publicar release com os ficheiros completos
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          gh release view $env:RELEASE_TAG --json isDraft --jq .isDraft 2>$null | Out-Null
+          if ($LASTEXITCODE -eq 0) { throw 'A tag já tem um release. Verifica-o antes de publicar novamente.' }
+          gh release create $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --verify-tag --draft --title "SpawnVault $version" --notes-file RELEASE_NOTES.md
+          if ($LASTEXITCODE -ne 0) { throw 'Não foi possível criar o rascunho.' }
+          gh release upload $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY "dist/SpawnVault-Setup-$version.exe" "dist/SpawnVault-Setup-$version.exe.blockmap" dist/latest.yml dist/SpawnVault-Source.zip supabase/migration_v23_access.sql supabase/migration_v23_block_reason.sql
+          if ($LASTEXITCODE -ne 0) { throw 'Upload incompleto; o release continua em rascunho.' }
+          gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Não foi possível publicar o release.' }
