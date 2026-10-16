@@ -1,0 +1,62 @@
+{
+  "name": "spawnvault",
+  "version": "2.3.0",
+  "description": "Catálogo partilhado de itens e spawn names para FiveM",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis",
+    "dev": "electron .",
+    "configure-updates": "node scripts/configure-updates.cjs",
+    "check": "node scripts/check-source.cjs",
+    "test": "node tests-updates.cjs",
+    "verify-release": "node scripts/verify-release.cjs"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "pt.spawnvault.app",
+    "productName": "SpawnVault",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer.js",
+      "styles.css",
+      "README.md",
+      "supabase/*.sql",
+      "branding.js",
+      "assets/**/*",
+      "STATUS-v23.md",
+      "design.css",
+      "access.js",
+      "updates.js",
+      "update-config.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/app-icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/app-icon.ico",
+      "uninstallerIcon": "assets/app-icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Storm1408",
+        "repo": "Spawn-Vault",
+        "releaseType": "release"
+      }
+    ],
+    "artifactName": "SpawnVault-Setup-${version}.${ext}"
+  },
+  "author": "SpawnVault",
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}

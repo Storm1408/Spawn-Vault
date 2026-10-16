@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data: blob: https://*.supabase.co;">
+  <title>SpawnVault</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="design.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="branding.js"></script>
+  <script defer src="access.js"></script>
+  <script defer src="renderer.js"></script>
+</head>
+<body>
+  <span class="creator-credit">By: $torm</span>
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-icon">SV</div><div><h1>SpawnVault</h1><small>FIVEM ITEM DATABASE</small></div></div>
+      <div class="side-label">BIBLIOTECA</div>
+      <button class="nav-item active" id="navDashboard"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="11" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="18" width="7" height="3" rx="1"/></svg><span>Dashboard</span></button><button class="nav-item" id="navAll"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg><span>Todos os itens</span></button><button class="nav-item" id="navFavorites"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2-4.5-4.4 6.3-.9L12 3Z"/></svg><span>Favoritos</span></button><button class="nav-item" id="navRequests"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 14V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9M3 14h5l2 3h4l2-3h5m-4 5h6m-3-3v6"/></svg><span>Pedidos de itens</span></button><button class="nav-item" id="navTrash" hidden><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></svg><span>Reciclagem</span></button>
+      <button class="nav-item" id="manageUsersBtn" hidden><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 2 9 4v6c0 6-9 10-9 10S3 18 3 12V6l9-4Z"/><circle cx="12" cy="9" r="2.5"/><path d="M7.5 17v-1a4.5 4.5 0 0 1 9 0v1"/></svg><span>Administração</span></button>
+      <div class="side-label">GRUPOS</div>
+      <div id="categoryList" class="category-list"><button class="nav-item active" data-category="">◈ <span>Todas</span></button></div>
+      <button class="nav-item" id="checkUpdatesBtn"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 7v5h-5M4 17v-5h5m-4-5a8 8 0 0 1 13-2l2 2M4 17l2 2a8 8 0 0 0 13-2"/></svg><span>Verificar atualizações</span></button><button class="nav-item" id="signOutBtn"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4m6-13 5 5-5 5M8 12h12"/></svg><span>Terminar sessão</span></button>
+      <div class="sidebar-bottom">
+        <div class="connection-dot" id="connectionDot"></div>
+        <div><strong id="connectionText">Modo local</strong><small id="userText">Configura o acesso online</small></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">CATÁLOGO DE ITENS</div><h2>Biblioteca de spawns</h2></div>
+        <div class="top-actions"><button class="btn btn-secondary" id="exportBtn">Exportar CSV</button><label class="btn btn-secondary file-label" id="importLabel">Importar CSV<input type="file" id="importFile" accept=".csv,text/csv" hidden></label><button class="btn btn-primary" id="addBtn">＋ Adicionar item</button></div>
+      </header>
+      <section class="dashboard-panel" id="dashboardPanel"><h3>Visão geral</h3><div class="dashboard-grid" id="dashboardGrid"></div><h3>Últimos itens</h3><div id="dashboardRecent"></div></section><section class="toolbar" id="catalogToolbar">
+        <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Pesquisar por item, spawn ou grupo..."></div>
+        <select id="categoryFilter" aria-label="Filtrar por categoria"><option value="">Todos os grupos</option></select>
+        <button class="btn btn-secondary" id="viewToggle">▦ Vista em cartões</button><button class="btn btn-secondary" id="refreshBtn">↻ Atualizar</button>
+      </section>
+      <section class="stats" id="catalogStats">
+        <div class="stat-card"><span>ITENS NO CATÁLOGO</span><strong id="totalCount">0</strong></div>
+        <div class="stat-card"><span>GRUPOS</span><strong id="categoryCount">0</strong></div>
+        <div class="stat-card"><span>RESULTADOS</span><strong id="resultCount">0</strong></div>
+      </section>
+      <section class="table-card" id="catalogPanel">
+        <div class="table-heading"><div><h3>Itens registados</h3><p>Seleciona o spawn para o copiares instantaneamente.</p></div><span class="pill" id="syncPill">Local</span></div>
+        <div class="cards-grid" id="itemsCards" hidden></div><div class="table-scroll" id="itemsTable"><table><thead><tr><th>NOME DO ITEM</th><th>NOME DE SPAWN</th><th>GRUPO</th><th>DESCRIÇÃO</th><th></th></tr></thead><tbody id="itemsBody"></tbody></table></div>
+        <div id="emptyState" class="empty-state"><div class="empty-icon">⌕</div><h3>Ainda não existem itens</h3><p>Adiciona um item ou importa um ficheiro CSV para começar.</p><button class="btn btn-primary" id="emptyAddBtn">＋ Adicionar primeiro item</button></div>
+        <div class="table-footer"><span id="footerCount">0 itens</span><span>SpawnVault <span class="muted">· Catálogo FiveM</span></span></div>
+      </section>
+      <section class="feature-panel" id="requestsPanel" hidden><div class="table-heading"><h3>Pedidos de itens</h3><button class="btn btn-primary" id="newRequestBtn">＋ Sugerir item</button></div><div id="requestsList"></div></section><section class="feature-panel" id="trashPanel" hidden><div class="table-heading"><h3>Reciclagem</h3></div><div id="trashList"></div></section><footer>Catálogo partilhado · As alterações são protegidas por permissões no Supabase.</footer>
+    </main>
+  </div>
+
+  <dialog id="itemDialog"><span class="creator-credit">By: $torm</span>
+    <form id="itemForm" method="dialog">
+      <div class="dialog-head"><div><div class="eyebrow">CATÁLOGO</div><h2 id="dialogTitle">Adicionar item</h2></div><button type="button" class="icon-btn" id="closeDialog" aria-label="Fechar">×</button></div>
+      <input type="hidden" id="itemId">
+      <label>Nome do item <input id="itemName" maxlength="120" required placeholder="Ex.: Água"></label>
+      <label>Nome de spawn <input id="itemSpawn" maxlength="120" required placeholder="Ex.: water"></label>
+      <div class="field-label">Grupo do item <span class="required">*</span></div>
+      <div class="group-options" id="itemGroupOptions" role="group" aria-label="Selecionar um grupo"></div>
+      <label>Imagem do item (PNG, JPG, WebP ou GIF, até 3 MB)<input id="itemImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label><div class="image-preview-row"><img id="itemImagePreview" alt="Pré-visualização da imagem" hidden><button class="btn btn-secondary" type="button" id="removeImageBtn" hidden>Remover imagem</button></div>
+      <label>Descrição <textarea id="itemDescription" maxlength="500" rows="3" placeholder="Informação opcional sobre o item"></textarea></label>
+      <div class="dialog-note" id="dialogNote">Os dados serão guardados neste computador enquanto o modo local estiver ativo.</div>
+      <div class="dialog-actions"><button type="button" class="btn btn-secondary" id="cancelDialog">Cancelar</button><button type="submit" class="btn btn-primary">Guardar item</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="requestDialog"><span class="creator-credit">By: $torm</span><form id="requestForm"><div class="dialog-head"><h2>Sugerir novo item</h2><button type="button" class="icon-btn" id="closeRequest">×</button></div><label>Nome do item<input id="requestName" maxlength="120" required></label><label>Nome de spawn<input id="requestSpawn" maxlength="120" required></label><label>Justificação<textarea id="requestReason" maxlength="500"></textarea></label><div class="dialog-actions"><button type="submit" class="btn btn-primary">Enviar pedido</button></div></form></dialog><dialog id="authDialog" aria-label="Iniciar sessão no SpawnVault">
+    <span class="creator-credit">By: $torm</span>
+    <div class="auth-stage">
+      <div class="login-brand brand-lockup" role="img" aria-label="SpawnVault — FiveM Item Database"></div>
+      <form id="authForm" method="dialog" class="login-card">
+        <div class="login-heading"><h2>Iniciar sessão</h2><p>Acede ao catálogo de itens FiveM</p></div>
+        <label class="login-field"><span class="sr-only">Email</span><span class="field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="m3 5 9 8 9-8"/></svg></span><input id="authEmail" autocomplete="username" type="email" required placeholder="Email"></label>
+        <label class="login-field password-field"><span class="sr-only">Palavra-passe</span><span class="field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3m-5 5v3"/></svg></span><input id="authPassword" autocomplete="current-password" type="password" required minlength="6" placeholder="Palavra-passe"><button class="password-toggle" id="togglePassword" type="button" aria-label="Mostrar palavra-passe" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></label>
+        <div class="dialog-actions"><button type="submit" class="btn btn-primary">Iniciar sessão <span aria-hidden="true">→</span></button></div>
+        <p class="form-message" id="authMessage" role="status" aria-live="polite"></p>
+        <div class="login-divider"><span>ou</span></div>
+        <div class="login-access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m12 2 9 4v6c0 6-9 10-9 10S3 18 3 12V6Z"/><path d="m8 12 3 3 5-6"/></svg><p>O acesso é restrito a utilizadores autorizados.<br><span>Se tiveres problemas a iniciar sessão, contacta um administrador.</span></p></div>
+      </form>
+      <p class="login-motto">ORGANIZA <span>·</span> PESQUISA <span>·</span> GERIR <span>·</span> EVOLUIR</p>
+    </div>
+  </dialog>
+  <dialog id="adminDialog"><span class="creator-credit">By: $torm</span><div class="dialog-panel"><div class="dialog-head"><div><div class="eyebrow">ADMINISTRAÇÃO</div><h2>Administração</h2></div><button class="icon-btn" type="button" id="closeAdmin">×</button></div><div class="admin-tabs" role="tablist" aria-label="Administração"><button type="button" id="adminUsersTab" role="tab" aria-selected="true" aria-controls="adminUsersPanel" tabindex="0">Utilizadores</button><button type="button" id="adminGroupsTab" role="tab" aria-selected="false" aria-controls="adminGroupsPanel" tabindex="-1">Gerir grupos</button><button type="button" id="adminBlocksTab" role="tab" aria-selected="false" aria-controls="adminBlocksPanel" tabindex="-1">Bloqueios</button><button type="button" id="adminLogsTab" role="tab" aria-selected="false" aria-controls="adminLogsPanel" tabindex="-1">Logs</button></div><section id="adminUsersPanel" class="admin-tab-panel" role="tabpanel" aria-labelledby="adminUsersTab" tabindex="0"><p class="readonly-hint">Gere os utilizadores e as suas permissões de acesso.</p><div id="userManagerList" class="group-manager-list"></div></section><section id="adminGroupsPanel" class="admin-tab-panel" role="tabpanel" aria-labelledby="adminGroupsTab" tabindex="0" hidden><form id="groupForm" class="group-add-form"><label>Nome<input id="newGroupName" maxlength="60" required placeholder="Ex.: Equipamento"></label><label>Tipo<select id="newGroupParent"><option value="">Grupo principal</option></select></label><button class="btn btn-primary" type="submit">＋ Criar</button></form>
+      <div class="group-manager-list" id="groupManagerList"></div>
+      <p class="dialog-note">Os grupos principais podem conter subgrupos. Os itens pertencem apenas a subgrupos. Não é possível eliminar grupos com subgrupos ou itens.</p></section><section id="adminBlocksPanel" class="admin-tab-panel" role="tabpanel" aria-labelledby="adminBlocksTab" tabindex="0" hidden><p class="readonly-hint">Bloqueia ou repõe o acesso ao SpawnVault sem eliminar contas, dados ou permissões.</p><div class="block-filters"><input id="blockSearch" type="search" placeholder="Pesquisar utilizador por email" aria-label="Pesquisar utilizadores"><select id="blockFilter" aria-label="Filtrar por estado"><option value="">Todos</option><option value="blocked">Bloqueados</option><option value="active">Ativos</option></select></div><p id="blockMessage" class="form-message" role="status" aria-live="polite"></p><div id="blockUserList" class="block-user-list"></div></section><section id="adminLogsPanel" class="admin-tab-panel" role="tabpanel" aria-labelledby="adminLogsTab" tabindex="0" hidden><p class="readonly-hint">Histórico de atividade administrativa · últimos 60 registos.</p><div id="auditList" class="audit-list"></div></section></div></dialog>
+  <dialog id="blockUserDialog" aria-labelledby="blockDialogTitle"><span class="creator-credit">By: $torm</span><form id="blockUserForm"><div class="dialog-head"><h2 id="blockDialogTitle">Bloquear utilizador</h2><button type="button" class="icon-btn" id="closeBlockUser" aria-label="Fechar">×</button></div><p id="blockTargetEmail"></p><p id="blockExplanation" class="readonly-hint"></p><label id="blockReasonLabel">Motivo (opcional)<textarea id="blockReason" maxlength="500" rows="3"></textarea></label><p id="blockActionMessage" class="form-message" role="status" aria-live="polite"></p><div class="dialog-actions"><button type="button" class="btn btn-secondary" id="cancelBlockUser">Cancelar</button><button type="submit" class="btn btn-primary" id="confirmBlockUser">Bloquear utilizador</button></div></form></dialog>
+  <div id="toast" role="status" class="toast"></div>
+</body>
+</html>
