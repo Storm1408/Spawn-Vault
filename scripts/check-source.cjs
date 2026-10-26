@@ -7,6 +7,8 @@ const config=JSON.parse(fs.readFileSync(path.join(root,'update-config.json')));
 assert.equal(config.owner,'Storm1408');assert.equal(config.repo,'Spawn-Vault');assert.equal(config.provider,'github');
 assert.equal(config.owner,pkg.build.publish[0].owner);assert.equal(config.repo,pkg.build.publish[0].repo);
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'Duplicate HTML IDs');
-for(const id of ['adminUsersTab','adminGroupsTab','adminBlocksTab','adminLogsTab','blockUserForm','authMessage','requestArchiveBtn','requestMigrationHint','imageViewerDialog','imageViewerImage'])assert(ids.includes(id),id);
+for(const id of ['adminUsersTab','adminGroupsTab','adminBlocksTab','adminLogsTab','blockUserForm','authMessage','requestArchiveBtn','requestMigrationHint','imageViewerDialog','imageViewerImage','authUsername','createUserDialog','createUserForm','newUserBtn'])assert(ids.includes(id),id);
 assert(!ids.includes('manageGroupsBtn'),'Groups must stay inside Administration');
 console.log(`Source checks passed for SpawnVault ${pkg.version}`);
+
+assert(!ids.includes('authEmail'),'Login must use username');

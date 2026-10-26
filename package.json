@@ -1,6 +1,6 @@
 {
   "name": "spawnvault",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Catálogo partilhado de itens e spawn names para FiveM",
   "main": "main.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "dev": "electron .",
     "configure-updates": "node scripts/configure-updates.cjs",
     "check": "node scripts/check-source.cjs",
-    "test": "node tests-updates.cjs && node tests-moderation.cjs",
+    "test": "node tests-updates.cjs && node tests-moderation.cjs && node tests-accounts.cjs && node tests-accounts-server.cjs",
     "verify-release": "node scripts/verify-release.cjs"
   },
   "devDependencies": {
@@ -35,7 +35,8 @@
       "access.js",
       "updates.js",
       "update-config.json",
-      "STATUS-v24.md"
+      "STATUS-v24.md",
+      "STATUS-v241.md"
     ],
     "win": {
       "target": "nsis",

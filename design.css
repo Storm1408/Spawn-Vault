@@ -75,3 +75,5 @@ dialog::backdrop{background:#070709bd;backdrop-filter:blur(7px)}label input,labe
 .image-zoom:focus-visible{outline:2px solid #ff3b42;outline-offset:4px}
 .card-zoom{width:100%}.request-actions{display:flex;flex-wrap:wrap;gap:8px}.request-row>div:first-child{min-width:0;overflow-wrap:anywhere}.request-row small{color:var(--muted)}
 #imageViewerDialog{width:min(1000px,calc(100vw - 40px));max-height:92vh}#imageViewerImage{display:block;max-width:100%;max-height:72vh;width:auto;height:auto;object-fit:contain;margin:auto}
+
+.accounts-heading{display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap}.account-controls{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.account-controls input{width:160px;min-width:100px;background:#151517;color:#fff;border:1px solid #48484e;border-radius:6px;padding:8px}.group-name>small{display:block}.account-controls select,#createUserRole{background:#18181b;color:white;border:1px solid #48484e;padding:9px;border-radius:6px}#createUserRole{display:block;width:100%;margin-top:7px}#adminUsersPanel .group-manager-row{flex-wrap:wrap;gap:12px}
