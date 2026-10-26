@@ -38,7 +38,7 @@ function renderBlockUsers() {
   const q = document.getElementById('blockSearch').value.trim().toLocaleLowerCase('pt');
   const filter = document.getElementById('blockFilter').value;
   const selected = blockUsers.filter(u => (!q || String(u.email||u.user_id).toLocaleLowerCase('pt').includes(q)) && (!filter || u.blocked === (filter === 'blocked')));
-  document.getElementById('blockUserList').innerHTML = selected.map(u => `<div class="block-user-row"><div class="block-user-info"><strong>${escapeHtml(u.email||u.user_id)}</strong><small>${u.role==='admin'?'Administrador':'Utilizador'}${u.user_id===session?.user.id?' · A tua conta':''}</small>${u.blocked&&u.reason?`<p>${escapeHtml(u.reason)}</p>`:''}</div><span class="access-badge ${u.blocked?'blocked':'active'}">${u.blocked?'Bloqueado':'Ativo'}</span><button type="button" class="btn ${u.blocked?'btn-secondary':'btn-block'}" data-block-user="${escapeHtml(u.user_id)}" ${u.user_id===session?.user.id?'disabled title="Não podes bloquear a tua própria conta"':''}>${u.blocked?'Desbloquear':'Bloquear'}</button></div>`).join('') || '<p class="muted">Sem utilizadores para os filtros selecionados.</p>';
+  document.getElementById('blockUserList').innerHTML = selected.map(u => `<div class="block-user-row"><div class="block-user-info"><strong>${escapeHtml(u.email||u.user_id)}</strong><small>${roleName(u.role)}${u.user_id===session?.user.id?' · A tua conta':''}</small>${u.blocked&&u.reason?`<p>${escapeHtml(u.reason)}</p>`:''}</div><span class="access-badge ${u.blocked?'blocked':'active'}">${u.blocked?'Bloqueado':'Ativo'}</span><button type="button" class="btn ${u.blocked?'btn-secondary':'btn-block'}" data-block-user="${escapeHtml(u.user_id)}" ${u.user_id===session?.user.id?'disabled title="Não podes bloquear a tua própria conta"':''}>${u.blocked?'Desbloquear':'Bloquear'}</button></div>`).join('') || '<p class="muted">Sem utilizadores para os filtros selecionados.</p>';
 }
 async function loadBlockUsers() {
   if (!isAdmin() || !client) return;
@@ -83,7 +83,7 @@ document.getElementById('blockUserForm').addEventListener('submit',async event=>
     const {error}=await client.rpc('spawnvault_set_user_block',{target_user:target.id,blocked_value:target.blocked,block_reason:document.getElementById('blockReason').value.trim()});
     if(error)throw error;
     document.getElementById('blockUserDialog').close();
-    notify(target.blocked?'Utilizador bloqueado.':'Utilizador desbloqueado.');
+    notify(target.blocked?'Utilizador bloqueado.':'Utilizador desbloqueado.','success');
     await loadBlockUsers();await loadAdminPanel();
   } catch(error) {document.getElementById('blockActionMessage').textContent=error.message;}
   finally {savingBlock=false;document.getElementById('confirmBlockUser').disabled=false;}
