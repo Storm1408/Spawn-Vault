@@ -1,19 +1,20 @@
-# SpawnVault 2.4.0
+# SpawnVault 2.4.1
 
-Novo cargo Moderador para criar itens e aceitar/rejeitar pedidos nos grupos existentes. Contas, grupos, edição/eliminação de itens e as restantes funções administrativas continuam reservadas aos administradores.
-
-Os pedidos mostram o username do autor e de quem decidiu. O autor pode eliminar pedidos pendentes. Os pedidos aceites/rejeitados podem ser arquivados e repostos num arquivo pessoal. Na ausência de username no perfil, apresenta-se o nome antes do @ do email. A aprovação cria o item e regista a decisão numa única transação.
-
-As imagens ampliam com um clique na tabela e nos cartões. O subgrupo em consulta fica pré-selecionado ao adicionar um item. Os avisos aparecem à frente das janelas abertas: verde para confirmações e vermelho para erros. Mantidos o logotipo, marca de água, assinatura, contas, dados e atualizações pelo GitHub.
+- Login por **username e palavra-passe**, em substituição do email no formulário.
+- **Administração → Utilizadores → Criar utilizador**: criação de contas apenas por administradores ativos, com username, email, palavra-passe e cargo.
+- A administração pode consultar e alterar os usernames das contas existentes. Os usernames são únicos e o login não distingue maiúsculas de minúsculas.
+- Mantidos UUIDs, passwords, emails, cargos, bloqueios e dados. As contas anteriores recebem um username baseado no perfil existente ou no nome antes do @; caracteres incompatíveis e nomes repetidos são ajustados automaticamente.
+- Criação de contas validada no servidor, sem chave administrativa dentro da aplicação. Inscrições diretas fora deste fluxo são recusadas. O serviço público de login não devolve emails e limita tentativas repetidas.
+- Mantidas as funcionalidades e o design da v2.4.0.
 
 ## Instalação
 
-Instalar SpawnVault-Setup-2.4.0.exe ou utilizar a opção de atualização na aplicação. A aplicação mantém o identificador e a ligação existentes. Para ativar o cargo de moderador e as novas opções dos pedidos, o administrador do projeto deve aplicar migration_v24.sql no Supabase. O instalador não executa esta migração.
+Usar Verificar atualizações na aplicação ou instalar SpawnVault-Setup-2.4.1.exe. Consultar o username em Administração → Utilizadores; as palavras-passe existentes mantêm-se.
 
-## Atualização do Supabase
+## Supabase
 
-Num projeto com a v2.3 configurada, executar supabase/migration_v24.sql no SQL Editor do projeto existente como proprietário. Não executar schema.sql novamente. A migração é transacional, repetível e não recria contas ou dados. O instalador não executa SQL. Sem a migração, o catálogo permanece acessível e as novas opções dos pedidos mostram uma indicação de configuração em falta.
+No projeto SpawnVault existente, a migração v2.4.1 e o serviço de contas foram aplicados com autorização do proprietário antes da publicação. Para outras instalações, aplicar supabase/migration_v241.sql após v2.4 e publicar a função spawnvault-accounts com supabase/config.toml. O instalador não executa SQL nem publica funções. A configuração e instruções estão no código-fonte.
 
-## Verificação
+## Validação
 
-Testes locais de interface com dados fictícios, permissões em PostgreSQL/PGlite, controlador de atualizações e integridade do pacote. O Supabase de produção não foi alterado nem validado. A instalação/atualização completa no Windows não foi testada. O instalador não tem assinatura digital. Consultar STATUS-v24.md.
+Testes locais de interface, atualizador, regras PostgreSQL e serviço de contas. Migração aplicada e contagens de dados conferidas no projeto existente. Verificado que pedidos públicos inválidos são recusados e emails não são expostos. Login com credenciais reais, criação administrativa na aplicação e instalação Windows completa aguardam validação do utilizador. Instalador sem assinatura digital.

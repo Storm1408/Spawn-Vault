@@ -1,0 +1,3 @@
+# A função de login é pública; a ação create valida o JWT e o administrador no servidor.
+[functions.spawnvault-accounts]
+verify_jwt = false
