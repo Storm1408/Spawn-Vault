@@ -8,7 +8,7 @@ As imagens ampliam com um clique na tabela e nos cartões. O subgrupo em consult
 
 ## Instalação
 
-Instalador preparado: SpawnVault-Setup-2.4.0.exe. Aplicar e validar primeiro a migração do Supabase. A aplicação mantém o identificador e a ligação existentes. Esta preparação local ainda não foi publicada como atualização geral.
+Instalar SpawnVault-Setup-2.4.0.exe ou utilizar a opção de atualização na aplicação. A aplicação mantém o identificador e a ligação existentes. Para ativar o cargo de moderador e as novas opções dos pedidos, o administrador do projeto deve aplicar migration_v24.sql no Supabase. O instalador não executa esta migração.
 
 ## Atualização do Supabase
 
