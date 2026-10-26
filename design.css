@@ -66,3 +66,12 @@ dialog::backdrop{background:#070709bd;backdrop-filter:blur(7px)}label input,labe
 @media(max-height:740px){.auth-stage{gap:10px;padding-top:16px;padding-bottom:30px}.brand-lockup{width:220px}#authForm.login-card{padding:21px 26px}.login-heading{margin-bottom:15px}.login-motto{margin-top:10px}}
 @media(max-height:660px){.auth-stage{padding-top:12px;padding-bottom:28px;gap:8px}.brand-lockup{width:200px}#authForm.login-card{padding:18px 26px}.login-heading{margin-bottom:14px}.login-heading h2{font-size:21px}#authDialog label.login-field{height:45px;margin-top:12px}#authDialog .dialog-actions{margin-top:16px}#authDialog .dialog-actions .btn{height:45px}.login-divider{margin:17px 0}.login-access{padding:10px 13px}.login-motto{margin-top:8px}}
 @media(max-width:650px){.brand-icon.vault-art{width:44px;height:40px}.brand{padding-left:0}.auth-stage{padding-left:18px;padding-right:18px}.login-motto{letter-spacing:2px}.login-motto span{margin:0 5px}#authForm.login-card{padding:24px 20px}.login-access{gap:10px;padding:11px}.login-access p{font-size:10px}.login-access p span{font-size:9px}.s-watermark{right:15px}}
+
+/* v2.4: avisos na camada superior, arquivo e ampliação de imagens. */
+.toast[popover]{inset:auto auto 24px 50%;margin:0;border:1px solid #cc424b;background:#37191d;color:#ffe0e2;max-width:min(640px,calc(100vw - 32px));width:max-content;white-space:normal;z-index:2147483647;box-shadow:0 12px 40px #0009}
+.toast[data-type="success"]{background:#123a2a;border-color:#38ae79;color:#d4ffe8}
+.toast[data-type="info"]{background:#24262c;border-color:#777b86;color:#f1f2f5}
+.image-zoom{display:inline-flex;padding:0;border:0;border-radius:8px;background:transparent;cursor:zoom-in;flex-shrink:0}
+.image-zoom:focus-visible{outline:2px solid #ff3b42;outline-offset:4px}
+.card-zoom{width:100%}.request-actions{display:flex;flex-wrap:wrap;gap:8px}.request-row>div:first-child{min-width:0;overflow-wrap:anywhere}.request-row small{color:var(--muted)}
+#imageViewerDialog{width:min(1000px,calc(100vw - 40px));max-height:92vh}#imageViewerImage{display:block;max-width:100%;max-height:72vh;width:auto;height:auto;object-fit:contain;margin:auto}

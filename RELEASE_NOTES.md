@@ -1,19 +1,19 @@
-# SpawnVault 2.3.0
+# SpawnVault 2.4.0
 
-Nova interface em grafite e vermelho, com o cofre original, marca de água S e assinatura By: $torm. Mantém o catálogo, pesquisa, cartões, favoritos, pedidos, reciclagem, imagens, histórico e sincronização da v2.2.
+Novo cargo Moderador para criar itens e aceitar/rejeitar pedidos nos grupos existentes. Contas, grupos, edição/eliminação de itens e as restantes funções administrativas continuam reservadas aos administradores.
 
-A Administração reúne Utilizadores, Gerir grupos, Bloqueios e Logs. Os bloqueios são reversíveis, preservam as contas e os dados e apresentam o motivo no login.
+Os pedidos mostram o username do autor e de quem decidiu. O autor pode eliminar pedidos pendentes. Os pedidos aceites/rejeitados podem ser arquivados e repostos num arquivo pessoal. Na ausência de username no perfil, apresenta-se o nome antes do @ do email. A aprovação cria o item e regista a decisão numa única transação.
 
-As atualizações passam a ser verificadas automaticamente através deste repositório, com aviso de nova versão e opção de descarregar, instalar ou adiar.
+As imagens ampliam com um clique na tabela e nos cartões. O subgrupo em consulta fica pré-selecionado ao adicionar um item. Os avisos aparecem à frente das janelas abertas: verde para confirmações e vermelho para erros. Mantidos o logotipo, marca de água, assinatura, contas, dados e atualizações pelo GitHub.
 
 ## Instalação
 
-Instalar SpawnVault-Setup-2.3.0.exe. Versões antigas que ainda não tinham o repositório configurado precisam desta primeira instalação manual. A aplicação mantém o identificador e a ligação ao Supabase existentes.
+Instalar SpawnVault-Setup-2.4.0.exe ou utilizar a opção de atualização na aplicação. A aplicação mantém o identificador e a ligação existentes. Para ativar o cargo de moderador e as novas opções dos pedidos, o administrador do projeto deve aplicar migration_v24.sql no Supabase. O instalador não executa esta migração.
 
 ## Atualização do Supabase
 
-Se ainda não foram aplicados, executar migration_v23_access.sql e depois migration_v23_block_reason.sql no SQL Editor do projeto existente. Se o bloqueio já estava ativado, basta aplicar a migração do motivo. O instalador não executa SQL nem altera contas, permissões ou dados de produção.
+Num projeto com a v2.3 configurada, executar supabase/migration_v24.sql no SQL Editor do projeto existente como proprietário. Não executar schema.sql novamente. A migração é transacional, repetível e não recria contas ou dados. O instalador não executa SQL. Sem a migração, o catálogo permanece acessível e as novas opções dos pedidos mostram uma indicação de configuração em falta.
 
 ## Verificação
 
-Verificações locais de interface, regras de acesso em PostgreSQL temporário, controlador de atualizações, conteúdo do pacote e integridade do instalador. A instalação/atualização completa no Windows e as contas do Supabase de produção não foram testadas neste ambiente. O instalador não tem assinatura digital.
+Testes locais de interface com dados fictícios, permissões em PostgreSQL/PGlite, controlador de atualizações e integridade do pacote. O Supabase de produção não foi alterado nem validado. A instalação/atualização completa no Windows não foi testada. O instalador não tem assinatura digital. Consultar STATUS-v24.md.
